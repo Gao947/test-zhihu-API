@@ -1,0 +1,25 @@
+{
+  "name": "test-zhihu-api",
+  "version": "1.0.0",
+  "description": "仿知乎 RESTful API",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Gao947/test-zhihu-API.git"
+  },
+  "author": "Eva Gao",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Gao947/test-zhihu-API/issues"
+  },
+  "homepage": "https://github.com/Gao947/test-zhihu-API#readme",
+  "dependencies": {
+    "koa": "^2.14.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
