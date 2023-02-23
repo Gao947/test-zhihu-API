@@ -2,18 +2,24 @@ const Koa = require('koa');
 const app = new Koa();
 
 app.use(async (ctx, next) => {
-    console.log(1)
-    await next();
-    console.log(2);
-    ctx.body = 'Hello Zhihu API';
+    if(ctx.url === '/'){
+        ctx.body = 'This is MainPage';
+    }else if(ctx.url === '/users'){
+        if(ctx.method === 'GET'){
+        ctx.body = 'This is UserPage';
+        } else if(ctx.method === 'POST'){
+            ctx.body = 'Create users';
+        } else {
+            ctx.status =405;
+       } 
+    } else if (ctx.url.match(/\/users\/\w+/)){
+        const userId = ctx.url.match(/\/users\/(\w+)/)[1];
+        ctx.body = `This is user ${userId}`
+    }
+        else {
+            ctx.status =404;
+    }
 });
-app.use(async (ctx, next) => {
-    console.log(3);
-    await next();
-    console.log(4)
-});
-app.use(async (ctx) => {
-    console.log(5);
-});
+
 
 app.listen(2000);
