@@ -4,7 +4,7 @@ const router = new Router({prefix: '/users'});
 const { 
     find, findById, create, update, 
     delete: del, login, checkOwner
-} = require('../contrallers/users');
+} = require('../controllers/users');
 
 const { secret } = require('../config');
 
