@@ -9,13 +9,14 @@ const userSchema = new Schema({
     avatar_url: { type: String },
     gender: { type: String, enum: ['male', 'female', 'other'], default: 'other', required: true },
     headline: { type: String },
-    locations: { type: [{type: String}] },
-    business: { type: String },
+    locations: { type: [{type: String}], select: false },
+    business: { type: String, select: false },
     employments: { 
         type: [{
             company: { type: String },
             job: { type: String },
         }],
+        select: false,
      },
      education: {
         type: [{
@@ -25,6 +26,7 @@ const userSchema = new Schema({
             entrance_year: { type: Number },
             graduation_year: { type: Number },
         }],
+        select: false,
      },
 });
 

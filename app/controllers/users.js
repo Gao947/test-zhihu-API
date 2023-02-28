@@ -6,8 +6,10 @@ class UsersCtl {
     async find(ctx) {
         ctx.body = await User.find();
     }
-    async findById(ctx){
-        const user = await User.findById(ctx.params.id);
+    async findById(ctx) {
+        const { fields } = ctx.query;
+        const selectFields = fields.split(';').filter(f => f).map(f => ' +' + f).join('');
+        const user = await User.findById(ctx.params.id).select(selectFields);
         if(!user) { ctx.throw(404, '用户不存在'); }
         ctx.body = user;
     }
