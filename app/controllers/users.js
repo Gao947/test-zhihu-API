@@ -7,7 +7,7 @@ class UsersCtl {
         ctx.body = await User.find();
     }
     async findById(ctx) {
-        const { fields } = ctx.query;
+        const { fields='' } = ctx.query;
         const selectFields = fields.split(';').filter(f => f).map(f => ' +' + f).join('');
         const user = await User.findById(ctx.params.id).select(selectFields);
         if(!user) { ctx.throw(404, '用户不存在'); }
@@ -57,7 +57,7 @@ class UsersCtl {
         const user = await User.findOne(ctx.request.body);
         if(!user){ ctx.throw(401, '用户名或密码不正确'); }
         const { _id, name } = user;
-        const token = jsonwebtoken.sign({ _id, name }, secret, {expiresIn: 'id'});
+        const token = jsonwebtoken.sign({ _id, name }, secret, {expiresIn: '1d'});
         ctx.body = { token };
     }
     async listFollowing(ctx){
