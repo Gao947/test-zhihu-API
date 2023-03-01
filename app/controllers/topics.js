@@ -1,4 +1,5 @@
 const Topic = require('../models/topics');
+const User = require('../models/users');
 
 class TopicsCtl {
     async find(ctx) {
@@ -8,6 +9,11 @@ class TopicsCtl {
         ctx.body = await Topic
             .find({ name: new RegExp(ctx.query.q) }) //q表示为关键词
             .limit(perPage).skip(page * perPage);
+    }
+    async checkTopicExist(ctx, next){
+        const topic = await Topic.findById(ctx.params.id);
+        if(!topic) { ctx.throw(404, '话题不存在'); }
+        await next();
     }
     async findById(ctx){
         const { fields ='' } = ctx.query;
@@ -32,6 +38,10 @@ class TopicsCtl {
         });
         const topic = await Topic.findByIdAndUpdate(ctx.params.id, ctx.request.body);
         ctx.body = topic;
+    }
+    async listTopicFollowers (ctx){
+        const users = await User.find({ followingTopics: ctx.params.id }); //找出关注某个人的用户（就是某个人的粉丝）
+        ctx.body = users;
     }
 }
 
