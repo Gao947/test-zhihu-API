@@ -134,31 +134,31 @@ class UsersCtl {
         const questions = await Question.find({ questioner: ctx.params.id });
         ctx.body = questions;
     }
-    async listLikingAnswers(ctx){
+    async listLikingAnswers(ctx) {
         const user = await User.findById(ctx.params.id).select('+likingAnswers').populate('likingAnswers');
         if (!user) { ctx.throw(404, '用户不存在'); }
         ctx.body = user.likingAnswers;
-    }
-    async likeAnswer(ctx, next){
+      }
+      async likeAnswer(ctx, next) {
         const me = await User.findById(ctx.state.user._id).select('+likingAnswers');
-        if(!me.likingAnswers.map(id => id.toString()).includes(ctx.params.id)) {
-            me.likingAnswers.push(ctx.params.id);
-            me.save();
-            await Answer.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: 1 } });
+        if (!me.likingAnswers.map(id => id.toString()).includes(ctx.params.id)) {
+          me.likingAnswers.push(ctx.params.id);
+          me.save();
+          await Answer.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: 1 } });
         }
         ctx.status = 204;
         await next();
-    }
-    async unlikeAnswer(ctx){
+      }
+      async unlikeAnswer(ctx) {
         const me = await User.findById(ctx.state.user._id).select('+likingAnswers');
         const index = me.likingAnswers.map(id => id.toString()).indexOf(ctx.params.id);
-        if(index > -1) {
-            me.likingAnswers.splice(index, 1);
-            me.save();
-            await Answer.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: -1 } });
+        if (index > -1) {
+          me.likingAnswers.splice(index, 1);
+          me.save();
+          await Answer.findByIdAndUpdate(ctx.params.id, { $inc: { voteCount: -1 } });
         }
         ctx.status = 204;
-    }
+      }
     async listDislikingAnswers(ctx){
         const user = await User.findById(ctx.params.id).select('+dislikingAnswers').populate('dislikingAnswers');
         if (!user) { ctx.throw(404, '用户不存在'); }
